@@ -4,8 +4,7 @@ from app.routes.user import userRouter
 from app import create_app
 from app.database import db
 from app.socket import socketio
-import eventlet
-import threading
+
 from threading import Lock
 
 
