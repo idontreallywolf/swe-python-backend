@@ -274,7 +274,11 @@ class Middleware:
         """
         @wraps(f)
         def decorated(*args, **kwargs):
+
             token = request.cookies.get('refreshToken')
+            t = Database.get_token(token)
+            user = UserDatabase.get_user_by_username(t.username)
+            UserDatabase.setIsOnline(user, False)
 
             if not token or len(token) == 0:
                 # the token is invalid already, blame Ibo :D
@@ -282,7 +286,7 @@ class Middleware:
 
             Database.update_refresh_token(token, isActive=False)
 
-            return f(*args, **kwargs)
+            return f(user,*args, **kwargs)
 
         return decorated
     
