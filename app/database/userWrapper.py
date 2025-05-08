@@ -96,13 +96,29 @@ class UserDatabase:
     def fetch():
         users = db.session.query(UserModel).all()
         return users
-    
-    
+
+
+    def userExists(username):
+        user = db.session.query(UserModel).filter(UserModel.username == username).first()
+
+        if user: 
+            return True
+        else: return False
+
+
+    def emailExists(email):
+        user = db.session.query(UserModel).filter(UserModel.email == email).first()
+
+        if user: 
+            return True
+        else: return False
+
+
     def increaseFailedLoginAttemps(user):
         user.failed_logins += 1
         db.session.commit()
 
-    
+
     def setTimeout(user):
         user.can_login_after = datetime.now() + timedelta(minutes=3)
         user.failed_logins = 0
